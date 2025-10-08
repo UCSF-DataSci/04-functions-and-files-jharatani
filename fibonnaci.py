@@ -14,10 +14,30 @@ Create a program that generates Fibonacci numbers less than a limit and writes t
 Task: Generate the Fibonacci numbers less than 100 and write them to `fibonacci_100.txt`
 """
 
-def some_function(an_argument):
-    # Do something
+import argparse
 
-    return something
+def fibonnaci_sequence(limit):
+	# Generate Fibonacci numbers less than the given limit.
+	nums = [0,1]
+	while nums[-1] +nums[-2] < limit:
+		nums.append(nums[-1] + nums[-2])
+	return nums
+
+def main():
+	parser = argparse.ArgumentParser(description="Generate Fibonacci numbers less than a limit and write them to a file.")
+	parser.add_argument("limit", type=int, help="Upper limit for Fibonacci numbers")
+	parser.add_argument("output_file", type=str, help="Output file name")
+	args = parser.parse_args()
+
+	fibs = fibonnaci_sequence(args.limit)
+
+	try:
+		with open(args.output_file, 'w') as f:
+			for n in fibs:
+				f.write(str(n) + "\n")
+		print(f"Fibonacci numbers less than {args.limit} written to {args.output_file}")
+	except IOError as e:
+		print(f"An error occurred while writing to the file: {e}")
 
 if __name__ == "__main__":
-    # Do stuff here
+	main()
